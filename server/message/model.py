@@ -1,0 +1,1 @@
+"""SQLAlchemy Message model."""
