@@ -17,7 +17,9 @@ export default function ChatScreen() {
   const flatListRef        = useRef<FlatList>(null)
   const [input, setInput]  = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false)
   const insets = useSafeAreaInsets()
+  const scrollThreshold = 360 // roughly 5 chat rows
 
   const { messages, setMessages, loading } = useMessages()
 
@@ -57,6 +59,17 @@ export default function ChatScreen() {
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100)
   }
 
+  const handleScroll = useCallback((event: any) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent
+    const distanceFromBottom = contentSize.height - (contentOffset.y + layoutMeasurement.height)
+    setShowScrollToBottom(distanceFromBottom > scrollThreshold)
+  }, [])
+
+  const scrollToLatest = useCallback(() => {
+    flatListRef.current?.scrollToEnd({ animated: true })
+    setShowScrollToBottom(false)
+  }, [])
+
   return (
     <SafeAreaView style={styles.safe}>
       {/* header */}
@@ -85,8 +98,23 @@ export default function ChatScreen() {
           contentContainerStyle={[styles.list, { paddingBottom: 8 }]}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="interactive"
-          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          onContentSizeChange={() => {
+            if (!showScrollToBottom) {
+              flatListRef.current?.scrollToEnd({ animated: false })
+            }
+          }}
         />
+        {showScrollToBottom ? (
+          <TouchableOpacity
+            style={[styles.scrollToBottomBtn, { bottom: 84 + insets.bottom }]}
+            onPress={scrollToLatest}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.scrollToBottomIcon}>↓</Text>
+          </TouchableOpacity>
+        ) : null}
 
         {/* status + input */}
         <ConnectionBadge status={status} />
@@ -198,5 +226,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     fontWeight: '500',
+  },
+  scrollToBottomBtn: {
+    position: 'absolute',
+    right: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: theme.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+  scrollToBottomIcon: {
+    fontSize: 20,
+    color: '#fff',
+    fontWeight: '600',
   },
 })
