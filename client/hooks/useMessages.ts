@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react'
 import { API_URL, SESSION_ID } from '../constants/theme'
 import { Message } from '../types'
 
+const WELCOME_MESSAGE: Message = {
+  id: 'welcome-message',
+  session_id: SESSION_ID,
+  role: 'bot',
+  content:
+    "Hi, I'm Professor Guttenberg. I can help with Crohn's treatment questions like side effects, missed doses, and day-to-day habits. Share what's on your mind, and we can go step by step.",
+  created_at: new Date().toISOString(),
+}
+
 export function useMessages() {
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading]   = useState(true)
@@ -27,7 +36,7 @@ export function useMessages() {
           content: msg.content,
           created_at: msg.created_at,
         }))
-        setMessages(normalized)
+        setMessages(normalized.length > 0 ? normalized : [WELCOME_MESSAGE])
       })
       .catch(err => setError(err.message))
       .finally(() => setLoading(false))
