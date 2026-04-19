@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import {
   View, Text, TextInput, TouchableOpacity,
   FlatList, KeyboardAvoidingView, Platform,
-  StyleSheet, SafeAreaView,
+  StyleSheet, SafeAreaView, Keyboard,
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Message } from '../types'
@@ -53,6 +53,7 @@ export default function ChatScreen() {
     sendMessage(text)
     setIsTyping(true)
     setInput('')
+    Keyboard.dismiss()
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100)
   }
 
