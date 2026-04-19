@@ -12,7 +12,7 @@ from config.database import Base
 class SessionTab(Base):
     __tablename__ = "sessions"
 
-    session_id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    session_id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()), nullable=False)
     user_id: Mapped[str] = mapped_column(String(36), nullable=False, index=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

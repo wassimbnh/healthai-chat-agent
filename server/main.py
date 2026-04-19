@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from config.database import Base, engine
 from session.router import router as session_router
 from message.router import router as message_router
+from chat.router import router as chat_router
 
 
 app = FastAPI(
@@ -23,6 +24,7 @@ app.add_middleware(
 Base.metadata.create_all(bind=engine)
 app.include_router(session_router)
 app.include_router(message_router)
+app.include_router(chat_router)
 
 
 @app.get("/health", tags=["health"])
