@@ -14,7 +14,7 @@ class MessageRepository(AbstractMessageRepo):
         self.db = db
 
     def create_message(self, session_id: UUID, role: str, content: str) -> MessageTab:
-        message = MessageTab(session_id=str(session_id), role=role, content=content)
+        message = MessageTab(session_id=str(session_id), role=role.upper(), content=content)
         self.db.add(message)
         self.db.commit()
         self.db.refresh(message)

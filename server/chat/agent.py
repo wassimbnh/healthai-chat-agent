@@ -16,7 +16,7 @@ class ChatAgent:
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
         for msg in history or []:
-            role = "user" if msg.role.lower() == "user" else "assistant"
+            role = "user" if msg.role.upper() == "USER" else "assistant"
             messages.append({
                 "role": role,
                 "content": msg.content,
