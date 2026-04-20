@@ -40,7 +40,17 @@ async def websocket_endpoint(
                     content=user_message,
                 )
 
-                bot_response_content = await get_response(user_message)
+                history = message_repository.get_last_n(
+                    session_id=UUID(session_id),
+                    n=5,
+                )
+
+                await ws_manager.send_personal_message(
+                    json.dumps({"type": "typing"}),
+                    websocket,
+                )
+
+                bot_response_content = await get_response(user_message, history)
 
                 bot_msg_record = message_repository.create_message(
                     session_id=UUID(session_id),

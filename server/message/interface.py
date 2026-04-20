@@ -12,3 +12,6 @@ class AbstractMessageRepo(ABC):
 
     @abstractmethod
     def get_messages_by_session(self, session_id: UUID) -> list[MessageTab]: ...
+
+    @abstractmethod
+    def get_last_n(self, session_id: UUID, n: int) -> list[MessageTab]: ...

@@ -27,3 +27,13 @@ class MessageRepository(AbstractMessageRepo):
             .order_by(MessageTab.created_at.asc())
         )
         return list(self.db.execute(statement).scalars().all())
+
+    def get_last_n(self, session_id: UUID, n: int) -> list[MessageTab]:
+        statement = (
+            select(MessageTab)
+            .where(MessageTab.session_id == str(session_id))
+            .order_by(MessageTab.created_at.desc())
+            .limit(n)
+        )
+        latest_first = list(self.db.execute(statement).scalars().all())
+        return list(reversed(latest_first))
