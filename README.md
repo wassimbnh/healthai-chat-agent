@@ -91,7 +91,7 @@ This is what you should see:
 
 ## Design diagram
 
-![client/assets/images/doc/mma-sys-designr.png](client/assets/images/doc/mma-sys-design.png)
+![client/assets/images/doc/mm-sys-design.png](client/assets/images/doc/mm-sys-design.png)
 
 ---
 
