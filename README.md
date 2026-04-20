@@ -190,4 +190,4 @@ In production, secure the WebSocket connection with token-based authentication:
 
 ## Support
 
-For support issues, contact: wassim@lifecare.co
+For support issues, contact: benhdiawassim@gmail.com
