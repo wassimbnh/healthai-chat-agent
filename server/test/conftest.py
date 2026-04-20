@@ -1,11 +1,15 @@
+import os
 import sys
 from collections.abc import Generator
 from pathlib import Path
+from uuid import UUID
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
+
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 
 import pytest
 from fastapi.testclient import TestClient
@@ -43,3 +47,13 @@ def client(tmp_path) -> Generator[TestClient, None, None]:
     app.dependency_overrides.clear()
     Base.metadata.drop_all(bind=engine)
     engine.dispose()
+
+
+@pytest.fixture
+def db_session(client: TestClient) -> Session:
+    return client.app.state.db
+
+
+@pytest.fixture
+def test_user_id() -> str:
+    return str(UUID("00000000-0000-0000-0000-000000000001"))

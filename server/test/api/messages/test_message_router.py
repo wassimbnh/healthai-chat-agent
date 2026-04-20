@@ -1,18 +1,10 @@
 import pytest
-from uuid import uuid4
 
-from fastapi.testclient import TestClient
-
-
-@pytest.fixture
-def db_session(client: TestClient) -> Session:
-    return client.app.extra["db"]
+from message.repository import MessageRepository
 
 
-def test_get_messages_empty_for_new_session(client: TestClient) -> None:
-    user_id = str(uuid4())
-
-    session_response = client.post("/api/sessions", json={"user_id": user_id})
+def test_get_messages_empty_for_new_session(client, test_user_id) -> None:
+    session_response = client.post("/api/sessions", json={"user_id": test_user_id})
     session_id = session_response.json()["session_id"]
 
     response = client.get(f"/api/messages?session_id={session_id}")
@@ -21,15 +13,11 @@ def test_get_messages_empty_for_new_session(client: TestClient) -> None:
     assert response.json() == []
 
 
-def test_get_messages_returns_messages_in_order(client: TestClient) -> None:
-    from message.repository import MessageRepository
-
-    user_id = str(uuid4())
-
-    session_response = client.post("/api/sessions", json={"user_id": user_id})
+def test_get_messages_returns_messages_in_order(client, db_session, test_user_id) -> None:
+    session_response = client.post("/api/sessions", json={"user_id": test_user_id})
     session_id = session_response.json()["session_id"]
 
-    repo = MessageRepository(client.app.state.db)
+    repo = MessageRepository(db_session)
     repo.create_message(session_id, "USER", "Hello")
     repo.create_message(session_id, "BOT", "Hi there!")
     repo.create_message(session_id, "USER", "How are you?")
