@@ -9,6 +9,8 @@
 5. [Design decisions](#design-decisions)
 6. [API endpoints](#api-endpoints)
 7. [Troubleshooting](#troubleshooting)
+8. [Production considerations](#production-considerations)
+9. [Support](#support)
 
 ---
 
@@ -35,12 +37,7 @@ cp server/.env.example server/.env
 ipconfig
 ```
 
-Copy the IPv4 Address (e.g., `192.168.1.x`) and update `client/.env`:
-
-```
-EXPO_PUBLIC_API_URL=http://<your-ip>:8000
-EXPO_PUBLIC_WS_URL=ws://<your-ip>:8000
-```
+Copy the IPv4 Address (e.g., `192.168.1.x`) and update `client/.env` with your IP.
 
 3. Add your Groq API key in `server/.env`:
 
@@ -142,14 +139,8 @@ If your Groq quota has ended, you can create a new API key:
 
 1. Go to [console.groq.com](https://console.groq.com/)
 2. Sign in or create an account
-3. Click **API Keys** in the sidebar
-4. Click **Create API Key**
-5. Give it a name (e.g., "mamahealth-dev")
-6. Copy the key and update `server/.env`:
-
-```
-GROQ_API_KEY=gsk_xxxxxxxxxxxx
-```
+3. Click **API Keys** in the sidebarand Click **Create API Key**
+4. Copy the key and update `server/.env`
 
 ---
 
@@ -176,15 +167,27 @@ GROQ_API_KEY=gsk_xxxxxxxxxxxx
 | Metro bundler error | Run `npx expo start --clear` |
 | Device not found | Ensure device is on same network as host |
 
-### General
+---
 
-| Error | Fix |
-|-------|-----|
-| CORS errors | Check allow_origins in main.py |
-| WebSocket disconnected | Refresh the Expo Go app |
+## Production considerations
+
+### Security
+
+In production, secure the WebSocket connection with token-based authentication:
+
+1. **Authenticate on connect** - Pass JWT in query string or headers
+2. **Validate token** - Verify signature and expiration before accepting connection
+3. **Rate limiting** - Prevent spam/abuse with per-user limits
+6. **Input validation** - Validate and sanitize message content server-side before passing to the LLM
+
+### AI Agent Enhancement
+
+- Embed treatment documents and use semantic search for better context
+- Add evaluation agent for answer validation
+- Implement prompt injection detection
 
 ---
 
 ## Support
 
-For support issues, contact: benhdiawassim@gmail.com
+For support issues, contact: wassim@lifecare.co
