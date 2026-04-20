@@ -26,6 +26,7 @@ docker compose up --build
 
 ## Design diagram
 
+![alt text](mm-sys-design.png)
 
 ## Project architecture
 
@@ -38,8 +39,6 @@ docker compose up --build
   - `test/` - Unit tests
 
 ## Design decisions
-
-![alt text](mm-sys-design.png)
 
 ### Separation of concerns
 
