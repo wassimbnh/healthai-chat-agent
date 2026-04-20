@@ -1,93 +1,55 @@
-# Backend setup
+# MamaHealth
 
-This project uses [`uv`](https://docs.astral.sh/uv/) to manage Python dependencies.
+## Table of contents
 
-## Requirements
+1. [How to run](#how-to-run)
+2. [Design diagram](#design-diagram)
+3. [Project architecture](#project-architecture)
+4. [Design decisions](#design-decisions)
 
-- Python 3.12+
-- `uv` installed locally
+---
 
-Please install `uv` if needed
+## How to run
 
-## Create a virtual environment
-
-Create a local virtual environment from the project root:
-
-```bash
-uv venv
-```
-
-Activate it in PowerShell:
+### Frontend
 
 ```bash
-.venv\Scripts\Activate.ps1
+cp client/.env.example client/.env
+cd client && npm install && npx expo start
 ```
 
-## Install dependencies
-
-Install development dependencies only. This also installs the default `dev` group:
+### Backend
 
 ```bash
-uv sync
+docker compose up --build
 ```
 
-Install production dependencies only:
+## Design diagram
 
-```bash
-uv sync --group prod
-```
+## Project architecture
 
-## Groq Configuration
+- `/client` - Expo frontend
+- `/server` - FastAPI backend
+  - `chat/` - API endpoints
+  - `config/` - Business logic
+  - `message/` - Database models
+  - `scripts/` - WebSocket handlers
+  - `session/` - WebSocket handlers
+  - `test/` - WebSocket handlers
 
-This project uses Groq's Llama model. You need a Groq API key.
+## Design decisions
 
-1.  Get an API key from [Groq](https://console.groq.com/).
-2.  Update the `.env` file in the `server/` directory:
+### Separation of concerns
 
-```bash
-GROQ_API_KEY=your_api_key_here
-LLM_MODEL=llama-3.1-8b-instant
-```
+The backend follows a layered architecture with clear separation between:
 
-## Run the backend
+- **Routes** - Handle HTTP requests and responses
+- **Services** - Contain business logic
+- **Models** - Define database schemas
 
-Start the FastAPI server from the `server` directory:
+### Abstract layer
 
-```bash
-cd server
-uv run fastapi dev
-```
-
-Or, using uvicorn directly:
-
-```bash
-cd server
-uv run uvicorn main:app --reload
-```
-
-Install both development and production dependencies:
-
-```bash
-uv sync --group prod
-```
-
-## Run the backend
-
-Start the FastAPI server from the project root:
-
-```bash
-uv run --group prod fastapi dev
-```
-
-## Scripts
-
-### Create Session Script
-
-Creates a session with a hardcoded ID (useful for development/testing):
-
-```bash
-cd server
-.venv\Scripts\python.exe scripts/create_session.py
-```
-
-The hardcoded session ID is: `00000000-0000-0000-0000-000000000001`
+The application uses an abstract service layer to decouple business logic from specific implementations. This allows:
+- Easy swapping of implementations (e.g., different LLM providers)
+- Unit testing without dependencies
+- Clear contracts between layers
