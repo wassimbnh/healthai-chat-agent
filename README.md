@@ -69,12 +69,12 @@ docker ps
 ```
 
 This is what you should see:
-![alt text](mma-docker.png)
+![client/assets/images/doc/mma-docker.png](client/assets/images/doc/mma-docker.png)
 
 #### Open Expo Go
 
 This is what you should see:
-[SCREENSHOT]
+![client/assets/images/doc/mm-sys-design.png](client/assets/images/doc/mma-expo.png)
 
 ---
 
@@ -91,7 +91,7 @@ This is what you should see:
 
 ## Design diagram
 
-![alt text](mm-sys-design.png)
+client/assets/images/doc/mm-sys-design.png
 
 ---
 
