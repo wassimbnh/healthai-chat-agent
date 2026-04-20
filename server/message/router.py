@@ -2,16 +2,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query
 
-from config.dependencies import get_db
+from config.dependencies import get_message_repository
 from message.interface import AbstractMessageRepo
-from message.repository import MessageRepository
 from message.schema import MessageRead
 
 router = APIRouter(prefix="/api/messages", tags=["messages"])
-
-
-def get_message_repository(db=Depends(get_db)) -> AbstractMessageRepo:
-    return MessageRepository(db)
 
 
 @router.get("", response_model=list[MessageRead])
