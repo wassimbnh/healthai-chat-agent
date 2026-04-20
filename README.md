@@ -182,3 +182,9 @@ GROQ_API_KEY=gsk_xxxxxxxxxxxx
 |-------|-----|
 | CORS errors | Check allow_origins in main.py |
 | WebSocket disconnected | Refresh the Expo Go app |
+
+---
+
+## Support
+
+For support issues, contact: benhdiawassim@gmail.com
