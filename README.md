@@ -26,18 +26,20 @@ docker compose up --build
 
 ## Design diagram
 
+
 ## Project architecture
 
 - `/client` - Expo frontend
 - `/server` - FastAPI backend
-  - `chat/` - API endpoints
-  - `config/` - Business logic
-  - `message/` - Database models
-  - `scripts/` - WebSocket handlers
-  - `session/` - WebSocket handlers
-  - `test/` - WebSocket handlers
+  - `chat/` - Chat service with interface + implementation
+  - `config/` - Dependencies and database configuration
+  - `message/` - Message repository (interface + implementation)
+  - `session/` - Session repository (interface + implementation)
+  - `test/` - Unit tests
 
 ## Design decisions
+
+![alt text](mm-sys-design.png)
 
 ### Separation of concerns
 
