@@ -45,7 +45,7 @@ Copy the IPv4 Address (e.g., `192.168.1.x`) and update `client/.env` with your I
 GROQ_API_KEY=your_api_key_here
 ```
 
-> **Note:** Copy the key from the shared 1Password link. If the quota has ended or link does not work, see the [Groq API key guide](#groq-api-key-guide).
+> **Note:** To generate a GROQ_API_KEY, see the [Groq API key guide](#groq-api-key-guide).
 
 ### Frontend
 
@@ -57,6 +57,12 @@ cd client && npm install && npx expo start
 
 ```bash
 docker compose up --build
+```
+
+### Tests
+
+```bash
+cd server && uv run pytest
 ```
 
 #### Verify containers are running
